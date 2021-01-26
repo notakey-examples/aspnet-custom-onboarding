@@ -22,8 +22,9 @@ namespace CustomOnboardingProvider
                 new Client
                 {
                     ClientId = "testclient",
-                    ClientName = "Example client application using client credentials",
-                    AllowedGrantTypes = GrantTypes.Code,
+                    ClientName = "Example",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    // AlwaysIncludeUserClaimsInIdToken = true,
                     ClientSecrets = new List<Secret> {new Secret("SuperSecretPassword".Sha256())}, // change me!
                     AllowedScopes = new List<string> { "email", "profile", "openid", "phone"},
                     RedirectUris = new List<string> {

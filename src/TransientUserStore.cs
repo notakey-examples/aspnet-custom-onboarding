@@ -7,24 +7,20 @@ namespace CustomOnboardingProvider
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Identity;
 
-    internal class TransientUserStore : IUserStore<ApplicationUser>
+    public class TransientUserStore : IUserStore<ApplicationUser>
     {
         private IList<ApplicationUser> userList = new List<ApplicationUser>();
 
         public TransientUserStore()
         {
             // userList.Add(new ApplicationUser("1", "admin", Crypto.HashPassword("admin")));
-            userList.Add(new ApplicationUser("admin", "admin"));
+            // userList.Add(new ApplicationUser("admin", "admin"));
         }
 
         public Task<IdentityResult> CreateAsync(ApplicationUser user, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<ClaimsPrincipal> CreateAsync(ApplicationUser user)
-        {
-            throw new System.NotImplementedException();
+            userList.Add(user);
+            return Task.FromResult(IdentityResult.Success);
         }
 
         public Task<IdentityResult> DeleteAsync(ApplicationUser user, CancellationToken cancellationToken)

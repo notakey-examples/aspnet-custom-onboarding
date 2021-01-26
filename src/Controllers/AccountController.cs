@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Identity;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Threading;
 
 namespace CustomOnboardingProvider
 {
@@ -96,13 +97,22 @@ namespace CustomOnboardingProvider
             {
 
 
-                // await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, model.Username, clientId: context?.Client.ClientId));
-
+                //
 
                 // issue authentication cookie with subject ID and username
                 var userId = Guid.NewGuid().ToString();
+                var cancelToken = new CancellationToken();
 
-                // _userStore.
+                await _userStore.CreateAsync(new ApplicationUser()
+                {
+                    Id = userId,
+                    UserName = userId,
+                    Email = model.Email,
+                    DisplayName = model.DisplayName,
+                    PhoneNumber = model.PhoneNumber
+                }, cancelToken);
+
+                await _events.RaiseAsync(new UserLoginSuccessEvent("local", userId, model.DisplayName, clientId: context?.Client.ClientId));
 
                 var isuser = new IdentityServerUser(userId);
                 // {
