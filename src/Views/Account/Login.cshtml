@@ -1,0 +1,40 @@
+@model LoginViewModel
+
+<div class="login-page">
+
+    <partial name="_ValidationSummary" />
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Login</h2>
+                </div>
+
+                <div class="card-body">
+                    <form asp-route="Login">
+                        <input type="hidden" asp-for="ReturnUrl" />
+
+                        <div class="form-group">
+                            <label asp-for="DisplayName">Full name</label>
+                            <input class="form-control" placeholder="John Doe" asp-for="DisplayName">
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Email">Email</label>
+                            <input class="form-control" placeholder="john.doe@example.com" asp-for="Email">
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="PhoneNumber">Phone</label>
+                            <input class="form-control" placeholder="+371 26789012" asp-for="PhoneNumber">
+                        </div>
+
+                        <button class="btn btn-primary" name="button" value="login">Create Account</button>
+                        <button class="btn btn-secondary" name="button" value="cancel">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
