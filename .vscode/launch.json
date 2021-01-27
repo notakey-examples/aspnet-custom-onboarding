@@ -18,7 +18,11 @@
             //     "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
             // },
             "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "OIDC_CLIENT_ID": "testclient",
+                "OIDC_CLIENT_NAME": "NtkAS",
+                "OIDC_CLIENT_SECRET": "SuperSecretPassword",
+                "OIDC_CLIENT_REDIRECT_URI": "https://mynas.notakey.com/applications/f5f62469-8495-4b54-a3fd-d12b63e1c511/onboarding_requirements/OpenidOnboardingRequirement/openid_connect/callback"
             },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"

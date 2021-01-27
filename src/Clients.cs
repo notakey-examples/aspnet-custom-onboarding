@@ -1,5 +1,6 @@
 namespace CustomOnboardingProvider
 {
+    using System;
     using System.Collections.Generic;
     using IdentityServer4.Models;
 
@@ -7,6 +8,11 @@ namespace CustomOnboardingProvider
     {
         public static IEnumerable<IdentityServer4.Models.Client> Get()
         {
+            var clientId = Environment.GetEnvironmentVariable("OIDC_CLIENT_ID");
+            var clientName = Environment.GetEnvironmentVariable("OIDC_CLIENT_NAME");
+            var clientSecret = Environment.GetEnvironmentVariable("OIDC_CLIENT_SECRET");
+            var clientRedirectUri = Environment.GetEnvironmentVariable("OIDC_CLIENT_REDIRECT_URI");
+
             return new List<Client>
             {
                 // https://myauth.notakey.com/connect/authorize?
@@ -21,15 +27,17 @@ namespace CustomOnboardingProvider
                     // x-client-ver=5.5.0.0
                 new Client
                 {
-                    ClientId = "testclient",
-                    ClientName = "Example",
-                    AllowedGrantTypes = GrantTypes.Implicit,
+                    ClientId = clientId,
+                    ClientName = clientName,
+                    // AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowedGrantTypes = GrantTypes.Code,
                     // AlwaysIncludeUserClaimsInIdToken = true,
-                    ClientSecrets = new List<Secret> {new Secret("SuperSecretPassword".Sha256())}, // change me!
+                    ClientSecrets = new List<Secret> {new Secret(clientSecret.Sha256())}, // change me!
                     AllowedScopes = new List<string> { "email", "profile", "openid", "phone"},
                     RedirectUris = new List<string> {
-                        "https://mbp15.notakey.com:5002/signin-oidc", // test client
-                        "https://mynas.notakey.com/applications/f5f62469-8495-4b54-a3fd-d12b63e1c511/onboarding_requirements/OpenidOnboardingRequirement/openid_connect/callback"
+                        // "https://mbp15.notakey.com:5002/signin-oidc", // test client
+                        // "https://mynas.notakey.com/applications/f5f62469-8495-4b54-a3fd-d12b63e1c511/onboarding_requirements/OpenidOnboardingRequirement/openid_connect/callback"
+                        clientRedirectUri
                         },
                     RequirePkce = false
                 }
