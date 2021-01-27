@@ -34,7 +34,7 @@ namespace CustomOnboardingProvider
             // Add custom claims in token here based on user properties or any other source
             claims.Add(new Claim(JwtClaimTypes.Email, user.Email));
             claims.Add(new Claim(JwtClaimTypes.PhoneNumber, user.PhoneNumber));
-            // claims.Add(new Claim(JwtClaimTypes.DisplayName, user.DisplayName));
+            claims.Add(new Claim(JwtClaimTypes.Name, user.DisplayName));
 
             context.IssuedClaims = claims;
         }
