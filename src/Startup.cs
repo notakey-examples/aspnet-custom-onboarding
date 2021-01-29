@@ -22,10 +22,12 @@ namespace CustomOnboardingProvider
         {
             services.AddControllersWithViews();
 
+            // NOTE on services.Add????? dependency injection
             // Transient objects are always different; a new instance is provided to every controller and every service.
             // Scoped objects are the same within a request, but different across different requests.
             // Singleton objects are the same for every object and every request.
 
+            // This has to be singleton as AccountController creates user, while profile service accesses this data later
             services.AddSingleton<IUserStore<ApplicationUser>, TransientUserStore>();
             // services.AddTransient<IUserClaimsPrincipalFactory<ApplicationUser>, TransientUserClaimsPrincipalFactory>();
             services.AddScoped<IProfileService, UserProfileService>();
