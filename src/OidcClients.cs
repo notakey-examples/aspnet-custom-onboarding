@@ -4,7 +4,7 @@ namespace CustomOnboardingProvider
     using System.Collections.Generic;
     using IdentityServer4.Models;
 
-    internal class Clients
+    internal class OidcClients
     {
         public static IEnumerable<IdentityServer4.Models.Client> Get()
         {
@@ -30,7 +30,7 @@ namespace CustomOnboardingProvider
                     ClientId = clientId,
                     ClientName = clientName,
                     // AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowedGrantTypes = GrantTypes.Code,
+                    AllowedGrantTypes = GrantTypes.Implicit,
                     // AlwaysIncludeUserClaimsInIdToken = true,
                     ClientSecrets = new List<Secret> {new Secret(clientSecret.Sha256())}, // change me!
                     AllowedScopes = new List<string> { "email", "profile", "openid", "phone"},

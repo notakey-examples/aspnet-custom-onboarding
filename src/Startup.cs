@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using IdentityServer4.Services;
 using IdentityServer4.Validation;
@@ -47,15 +49,32 @@ namespace CustomOnboardingProvider
             // services.AddIdentity<IdentityUser, IdentityRole>();
             // .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            var signingFileName = Environment.GetEnvironmentVariable("OIDC_KEYPAIR_PFX_FILE");
+
+            if (String.IsNullOrEmpty(signingFileName) || !File.Exists(signingFileName))
+            {
+                throw new FileNotFoundException("Signing certificate is missing! Please provide valid value to OIDC_KEYPAIR_PFX_FILE.");
+            }
+
+            var siginingKeyPass = Environment.GetEnvironmentVariable("OIDC_KEYPAIR_PASS");
+
+            if (String.IsNullOrEmpty(signingFileName))
+            {
+                throw new ArgumentNullException("Signing certificate password is missing! Please provide valid value to OIDC_KEYPAIR_PASS.");
+            }
+
+            var cert = new X509Certificate2(signingFileName, siginingKeyPass);
+
             var ids = services.AddIdentityServer()
-                .AddInMemoryClients(Clients.Get())
-                .AddInMemoryIdentityResources(Resources.GetIdentityResources())
-                .AddInMemoryApiResources(Resources.GetApiResources())
-                .AddInMemoryApiScopes(Resources.GetApiScopes())
+                .AddInMemoryClients(OidcClients.Get())
+                .AddInMemoryIdentityResources(OidcResources.GetIdentityResources())
                 .AddProfileService<UserProfileService>()
                 // .AddAspNetIdentity<ApplicationUser>()
                 // .AddTestUsers(Users.Get())
-                .AddDeveloperSigningCredential();
+                .AddSigningCredential(cert)
+                // .AddDeveloperSigningCredential();
+                ;
+
 
         }
 
