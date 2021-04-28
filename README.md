@@ -10,11 +10,12 @@ This project shows how you can add custom onboarding flow to your Notakey Authen
 
 * Create Notakey Autehenticator service and configure onboarding requirements using management dashboard as shown below.
 
-    ![Onboarding requirements](images/or_index.png){:width="200px"}
+    <!-- ![Onboarding requirements](images/or_index.png){:width="200px"} -->
 
-    ![Onboarding config](images/or_config.png){:width="200px"}
+    ![Onboarding config](images/or_config.png)
+    <!-- {:width="200px"} -->
 
-    Claim mapping has to be configured like this `username=sub`. This will take attributes from ID token and create or update existing user.
+    Claim mapping has to be configured like this `username=sub full_name=name email=email main_phone_number=phone`. This will take attributes from ID token and create or update existing user.
 
 * Clone this repo and build image with `docker build ./ -t mybuiltimage`
 
