@@ -10,25 +10,14 @@ FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine AS runtime
 WORKDIR /app
 COPY --from=build-env /app/out .
 
-# required for healthcheck
-RUN apk add --no-cache curl && rm -rf /var/cache/apk/*
-
 COPY ./assets/docker_entrypoint.sh ./
+COPY ./certs /certs
 
-# HEALTHCHECK CMD curl --fail http://localhost:5000/health || exit 1
 EXPOSE 5000
 
-ENV ASPNETCORE_URLS http://0.0.0.0:5000
-
-ARG GIT_DESCRIBE=
-ARG GIT_COMMIT=
-ARG BUILD_DATE=
-
-ENV GIT_DESCRIBE $GIT_DESCRIBE
-ENV GIT_COMMIT $GIT_COMMIT
-
-LABEL com.notakey.vcs-ref=$GIT_COMMIT \
-    com.notakey.vcs-desc=$GIT_DESCRIBE \
-    com.notakey.build-date=$BUILD_DATE
+ENV ASPNETCORE_URLS=http://0.0.0.0:5000 \
+    OIDC_KEYPAIR_PASS=asdlkj \
+    OIDC_KEYPAIR_PFX_FILE=/certs/oidc_certificate.pfx \
+    OIDC_CLIENT_NAME=NtkAS
 
 ENTRYPOINT ["/app/docker_entrypoint.sh"]
